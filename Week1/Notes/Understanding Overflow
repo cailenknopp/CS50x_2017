@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <cs50.h>
+
+int main(void)
+{
+        int n = 1;
+        for (int i = 0; i < 64; i++)
+        {
+            printf("n = %i\n", n);
+            n = n * 2;
+        }
+}
+
+This program, run in a terminal window, will yield this result:
+
+~/workspace/Week1/Code/ $ ./overflow
+n = 1
+n = 2
+n = 4
+n = 8
+n = 16
+n = 32
+n = 64
+n = 128
+n = 256
+n = 512
+n = 1024
+n = 2048
+n = 4096
+n = 8192
+n = 16384
+n = 32768
+n = 65536
+n = 131072
+n = 262144
+n = 524288
+n = 1048576
+n = 2097152
+n = 4194304
+n = 8388608
+n = 16777216
+n = 33554432
+n = 67108864
+n = 134217728
+n = 268435456
+n = 536870912
+n = 1073741824
+overflow.c:10:19: runtime error: signed integer overflow: 1073741824 * 2 cannot be represented in type 'int'
+n = -2147483648
+n = 0
+n = 0
+n = 0
+n = 0
+n = 0
+
+Let's break down the code a little bit first.
+
+    int n = 1;
+    for (int i = 0; i < 64; i++)
+    {}
+    
+Assign integer 'n' to the value of '1'.
+This will become important later.
+Then, a "for" loop is created. The loop will run 64 times.
+This is because a new integer created in the brackets 'i' initially has the value of '0', but as long as the value of 'i' is under 64, "i++" will add one to the
+integer 'i'. 
+So, that statement on line 59 will run as long as it is true, hence the "for".
+
+Inside the brackets:
+
+ {
+    printf("n = %i\n", n);
+    n = n * 2;
+}
+
+printf will print the line "n = s", where s is equal to the value of the integer 'n', that was created earlier.
+"("n = %i\n", n)" the %i becomes the code equivalent of the s in the above statement. ",n" tells printf what integer.
+
+"n = n * 2" will multiply the value of n by two, then assign itself accordingly.
+
+So, the reason it prints so many numbers out, is because it is an exponential function, constantly multiply itself by two, and then multiply itself by two, as 
+many times as it can. 
+The "0"s at the end are because at the value 1073741824, the integer cannot be multiplied again by two, because if it does it will meet the maximum value of an
+integer in C. The maximum value an integer can be in C is 2147483648, therefore the error message on line 48 states this. The negative 2147483648 on line 49 is
+because in context, the binary value of the integer 'x' is equal to a negative value.
+
+The reason an integer in C is so limited is because it is only a 32-bit value.
+A 'long long' is a 64-bit value and thus, has double the capacity.
+
+Let's look at an integer's maximum value and a binary level.
+It is only 32-bit.
+The theoretical maximum range should be 2 to the power of 32 [(2)(2)(2)...], because binary numbers increase exponentially. They are an exponential function of two.
+128 64 32... all decrease by half, and inverse, increase by *2. 
+2 to the power of 32 is 4,294,967,295, but because integers can negative or positive, it is only half of that (2147483648), since half the binary values represent 
+negative numbers. This is called Two's Complement.
+
+A great reference for understanding 32-bit restrictions: https://en.wikipedia.org/wiki/32-bit
+or
+chapter overflow.c and bugs in week 1 CS50X lecture.
